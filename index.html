@@ -5,29 +5,50 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.2/angular-route.min.js"></script>
         <script>
             var app = angular.module("app", ["ngRoute"]);
-            app.controller("MyCtrl", function($scope, $http){
-                // console.log("In MyCtrl.");
-                $scope.foo = "bar : " + Math.random(); // proves controllers get called when they are needed
-                // console.log($scope);
-                // console.log($http);
+            angular.module("app").config(function($routeProvider){
+                $routeProvider
+                    .when("/people", {
+                        controller: "peopleCtrl",
+                        templateUrl: "/templates/people.html"
+                    })
+                    .when("/things", {
+                        controller: "thingsCtrl",
+                        templateUrl: "/templates/things.html"
+                    })
+                    .otherwise({
+                        controller: "homeCtrl",
+                        templateUrl: "/templates/home.html"
+                    })
+            });
+            app.controller("homeCtrl", function($scope, $http){
+                $scope.message = "Hello from Home"; // proves controllers get called when they are needed
                 $scope.changeFoo = function(){
                     $scope.foo = "bar : " + Math.random();
                 }
+            });
+            app.controller("peopleCtrl", function($scope, $http){
+                $scope.message = "Hello from People";
+            });
+            app.controller("thingsCtrl", function($scope, $http){
+                $scope.message = "Hello from Things";
             });
             // angular.module("app").controller.... <- can also do this
         </script>
     </head>
     <body ng-app="app">
+        <ul class="nav nav-tabs">
+            <li>
+                <a href="#/">Home</a>
+            </li>
+            <li>
+                <a href="#/people">People</a>
+            </li>
+            <li>
+                <a href="#/things">Things</a>
+            </li>
+        </ul>
         <div class="container">
-            <h1>Hello World {{5*5}}</h1>
-            <div class="well" ng-controller="MyCtrl">
-                <h2 ng-click="changeFoo()">In Well.</h2>
-                {{ foo }}
-            </div>
-            <div class="well" ng-controller="MyCtrl">
-                <h2>In Well.</h2>
-                <span ng-click="changeFoo()">{{ foo }}</span>
-            </div>
+            <div ng-view></div>
         </div>
     </body>
 </html>
