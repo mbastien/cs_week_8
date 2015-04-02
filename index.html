@@ -3,37 +3,7 @@
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.2/angular.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.2/angular-route.min.js"></script>
-        <script>
-            var app = angular.module("app", ["ngRoute"]);
-            angular.module("app").config(function($routeProvider){
-                $routeProvider
-                    .when("/people", {
-                        controller: "peopleCtrl",
-                        templateUrl: "/templates/people.html"
-                    })
-                    .when("/things", {
-                        controller: "thingsCtrl",
-                        templateUrl: "/templates/things.html"
-                    })
-                    .otherwise({
-                        controller: "homeCtrl",
-                        templateUrl: "/templates/home.html"
-                    })
-            });
-            app.controller("homeCtrl", function($scope, $http){
-                $scope.message = "Hello from Home"; // proves controllers get called when they are needed
-                $scope.changeFoo = function(){
-                    $scope.foo = "bar : " + Math.random();
-                }
-            });
-            app.controller("peopleCtrl", function($scope, $http){
-                $scope.message = "Hello from People";
-            });
-            app.controller("thingsCtrl", function($scope, $http){
-                $scope.message = "Hello from Things";
-            });
-            // angular.module("app").controller.... <- can also do this
-        </script>
+        <script src="/app.js"></script>
     </head>
     <body ng-app="app">
         <ul class="nav nav-tabs">
