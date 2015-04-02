@@ -14,24 +14,32 @@ angular.module("app").config(function($routeProvider){
             templateUrl: "/templates/home.html"
         })
 });
+
+angular.module("app").factory("PeopleSvc", function($http){
+    
+    return {getPeople : function(){
+        return $http.get("/api/people");
+        }
+    };
+}); // factories are singletons; only created once
+
 app.controller("homeCtrl", function($scope, $http){
     $scope.message = "Hello from Home"; // proves controllers get called when they are needed
     $scope.changeFoo = function(){
         $scope.foo = "bar : " + Math.random();
     }
 });
-app.controller("peopleCtrl", function($scope, $http){
+app.controller("peopleCtrl", function($scope, PeopleSvc){
     $scope.message = "Hello from People";
-    var people = [
-        {name : "Larry"},
-        {name : "Curly"},
-        {name : "Moe"},
-    ];
-    $scope.people = people;   
+    
+    PeopleSvc.getPeople().then(function(res){
+        // console.log(res);
+        $scope.people = res.data;
+    });   
     $scope.remove = function(person){
         //person.name = person.name.toUpperCase();
-        var index = people.indexOf(person);
-        people.splice(index, 1);
+        var index = $scope.people.indexOf(person);
+        $scope.people.splice(index, 1);
         console.log(person);
     }
 });
