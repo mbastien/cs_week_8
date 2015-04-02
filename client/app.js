@@ -5,6 +5,10 @@ angular.module("app").config(function($routeProvider){
             controller: "peopleCtrl",
             templateUrl: "/templates/people.html"
         })
+        .when("/people/:id", {
+            controller: "personCtrl",
+            templateUrl: "/templates/person.html"
+        })
         .when("/things", {
             controller: "thingsCtrl",
             templateUrl: "/templates/things.html"
@@ -17,8 +21,12 @@ angular.module("app").config(function($routeProvider){
 
 angular.module("app").factory("PeopleSvc", function($http){
     
-    return {getPeople : function(){
+    return {
+        getPeople : function(){
         return $http.get("/api/people");
+        },
+        getPerson : function(id){
+        return $http.get("/api/people/" + id);
         }
     };
 }); // factories are singletons; only created once
@@ -42,6 +50,12 @@ app.controller("peopleCtrl", function($scope, PeopleSvc){
         $scope.people.splice(index, 1);
         console.log(person);
     }
+});
+app.controller("personCtrl", function($scope, $routeParams, PeopleSvc){
+    $scope.message = "Hello from Person";
+    PeopleSvc.getPerson($routeParams.id).then(function(result){
+        $scope.person = result.data;
+    });
 });
 app.controller("thingsCtrl", function($scope, $http){
     $scope.message = "Hello from Things";
